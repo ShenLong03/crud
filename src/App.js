@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { isEmpty, size } from 'lodash'
-import { getCollection } from './actions'
+import { addDocument, deleteDocument, getCollection, updateDocument } from './actions'
 
 function App() {
   const [task, setTask] = useState("")
@@ -37,13 +37,13 @@ function App() {
       return
     }
 
-    // const result = await addDocument("tasks", { name: task })
-    // if (!result.statusResponse) {
-    //   setError(result.error)
-    //   return
-    // }
+    const result = await addDocument("tasks", { name: task })
+    if (!result.statusResponse) {
+      setError(result.error)
+      return
+    }
 
-    // setTasks([ ...tasks, { id: result.data.id, name: task } ])
+    setTasks([ ...tasks, { id: result.data.id, name: task } ])
     setTask("")
   }
 
@@ -54,11 +54,11 @@ function App() {
       return
     }
 
-    // const result = await updateDocument("tasks", id, { name: task })
-    // if (!result.statusResponse) {
-    //   setError(result.error)
-    //   return
-    // } 
+    const result = await updateDocument("tasks", id, { name: task })
+    if (!result.statusResponse) {
+      setError(result.error)
+      return
+    } 
 
     const editedTasks = tasks.map(item => item.id === id ? { id, name: task} : item)
     setTasks(editedTasks)
@@ -68,11 +68,11 @@ function App() {
   }
 
   const deleteTask = async(id) => {
-    // const result = await deleteDocument("tasks", id)
-    // if (!result.statusResponse) {
-    //   setError(result.error)
-    //   return
-    // }
+    const result = await deleteDocument("tasks", id)
+    if (!result.statusResponse) {
+      setError(result.error)
+      return
+    }
 
     const filteredTasks = tasks.filter(task => task.id !== id)
     setTasks(filteredTasks)
